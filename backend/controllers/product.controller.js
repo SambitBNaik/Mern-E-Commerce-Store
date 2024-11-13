@@ -112,7 +112,7 @@ export const getRecommendedProducts= async(req, res)=>{
             },
         ]);
 
-        res.json(products);
+        res.status(201).json(products);
     }catch(error){
         console.log("Error in getRecommendedProducts controller", error.message);
         res.status(500).json({message:"Server error", error: error.message});
@@ -142,7 +142,7 @@ export const toggleFeaturedProduct= async(req, res)=>{
             res.status(404).json({message:"Product not found"});
         }
     }catch(error){
-        console.log("Error in toggleFeaturedProduct controller", message.error);
+        console.log("Error in toggleFeaturedProduct controller",error.message);
         res.status(500).json({messge:"Server error", error: error.message});
     }
 }
