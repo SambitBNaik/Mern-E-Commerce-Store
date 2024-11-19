@@ -62,7 +62,7 @@ export const createProduct= async(req, res)=>{
             category,
         });
 
-        res.status(201),json(product);
+        res.status(201).json(product);
     }catch(error){
         console.error("Error in createProduct controller", error.message);
         res.status(500).json({message:"Server error", error:error.message});
@@ -74,7 +74,7 @@ export const deleteProduct= async(req, res)=>{
         const product= await Product.findById(req.params.id);
 
         if(!product){
-            res.status(404).json({message:"Product not found"});
+           return res.status(404).json({message:"Product not found"});
         }
 
         if(product.image){
@@ -85,8 +85,7 @@ export const deleteProduct= async(req, res)=>{
                 console.log("Error deleting image from cloudinary", error);
             }
         }
-
-        await product.findByIdAndDelete(req.params.id);
+        await Product.findByIdAndDelete(req.params.id);
 
         res.json({message: "Product deleted successfully"});
     }catch(error){
@@ -151,7 +150,7 @@ async function updateFeaturedProductsCache(){
     try{
 
         const featuredProducts= await Product.find({isFeatured: true});
-        await redis.set("featured_products", json.stringify(featuredProducts));
+        await redis.set("featured_products", JSON.stringify(featuredProducts));
     }catch(error){
         console.log("error in update cache function");
     }

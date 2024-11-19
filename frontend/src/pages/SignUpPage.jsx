@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, User, Lock, ArrowRight } from 'lucide-react';
+import { Mail, User, Lock, ArrowRight, Loader, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useUserStore } from '../stores/useUserStore';
 
 const SignUpPage = () => {
     const [formData, setFormData] = useState({
@@ -9,11 +10,12 @@ const SignUpPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
-    });
+    })
 
+    const {signup, loading}= useUserStore();
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(formData);
+        signup(formData);
     }
     return (
         <div className='flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
@@ -120,8 +122,21 @@ const SignUpPage = () => {
                         rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 
                         hover: bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                         focus:ring-emerald-500 transition duration-150 ease-in-out disabled:opacity-50'
+                        loading={loading}
                         >
-                            Sign Up
+                            {
+                                loading ? (
+                                   <>
+                                       <Loader className='mr-2 h-5 w-5 animate-spin' aria-hidden='true'/>
+                                       Loading...
+                                   </>
+                                ):(
+                                    <>
+                                        <UserPlus className='mr-2 h-5 w-5' aria-hidden='true' />
+                                        Sign up
+                                    </>
+                                )
+                            }
                         </button>
                     </form>
                     <p className='mt-8 text-center text-sm text-gray-400'>
